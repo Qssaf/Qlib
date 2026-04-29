@@ -52,7 +52,6 @@ public class QEventRegistry {
         return new HashMap<>(registry);
     }
 
-
     public static boolean isRegistered(QEvent<?> e) {
         List<QEvent<?>> events = registry.get(e.getEventType());
         return events != null && events.contains(e);

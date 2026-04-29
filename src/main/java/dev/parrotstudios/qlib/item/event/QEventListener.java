@@ -1,5 +1,6 @@
 package dev.parrotstudios.qlib.item.event;
 
+import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import dev.parrotstudios.qlib.QLib;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class QEventListener implements Listener{
+public class QEventListener implements Listener {
 
     private static final JavaPlugin plugin;
 
@@ -23,53 +24,58 @@ public class QEventListener implements Listener{
 
 
     @EventHandler
-    public void onRightClick(PlayerInteractEvent e) {
-
-        if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if(e.getItem() == null) return;
-        QEventRegistry.handle(QEventType.RIGHTCLICK, e.getItem(),e);
-
-    }
-
-    @EventHandler
-    public void onLeftClick(PlayerInteractEvent e) {
-
-        if(e.getAction() != Action.LEFT_CLICK_BLOCK && e.getAction() != Action.LEFT_CLICK_AIR) return;
-        if(e.getItem() == null) return;
-        QEventRegistry.handle(QEventType.LEFTCLICK, e.getItem(),e);
-    }
-
-    @EventHandler
-    public void onAnyClick(PlayerInteractEvent e) {
-
-        if(e.getItem() == null) return;
-        QEventRegistry.handle(QEventType.ANYCLICK, e.getItem(),e);
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-
-        Player player = e.getPlayer();
-        if(player.getInventory().getItemInMainHand().getType().isAir()) return;
-        QEventRegistry.handle(QEventType.MOVE, player.getInventory().getItemInMainHand(),e);
+    public void onRightClick(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getItem() == null) return;
+        QEventRegistry.handle(QEventType.RIGHT_CLICK, event.getItem(), event);
 
     }
 
     @EventHandler
-    public void onPlayerJump(PlayerJumpEvent e){
-        Player player = e.getPlayer();
-        if(player.getInventory().getItemInMainHand().getType().isAir()) return;
-        QEventRegistry.handle(QEventType.JUMP, player.getInventory().getItemInMainHand(),e);
+    public void onLeftClick(PlayerInteractEvent event) {
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_AIR) return;
+        if (event.getItem() == null) return;
+        QEventRegistry.handle(QEventType.LEFT_CLICK, event.getItem(), event);
+    }
+
+    @EventHandler
+    public void onAnyClick(PlayerInteractEvent event) {
+        if (event.getItem() == null) return;
+        QEventRegistry.handle(QEventType.ANY_CLICK, event.getItem(), event);
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (player.getInventory().getItemInMainHand().getType().isAir()) return;
+        QEventRegistry.handle(QEventType.MOVE, player.getInventory().getItemInMainHand(), event);
+
+    }
+
+    @EventHandler
+    public void onPlayerJump(PlayerJumpEvent event) {
+        Player player = event.getPlayer();
+        if (player.getInventory().getItemInMainHand().getType().isAir()) return;
+        QEventRegistry.handle(QEventType.JUMP, player.getInventory().getItemInMainHand(), event);
     }
 
 
     @EventHandler
-    public void onPlayerBreak(BlockBreakEvent e){
-
-        Player player = e.getPlayer();
-        if(player.getInventory().getItemInMainHand().getType().isAir()) return;
-        QEventRegistry.handle(QEventType.JUMP, player.getInventory().getItemInMainHand(),e);
+    public void onPlayerBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if (player.getInventory().getItemInMainHand().getType().isAir()) return;
+        QEventRegistry.handle(QEventType.BREAK, player.getInventory().getItemInMainHand(), event);
     }
 
+    @EventHandler
+    public void onArmorEquip(PlayerArmorChangeEvent event) {
+        if (event.getNewItem().getType().isAir()) return;
+        QEventRegistry.handle(QEventType.EQUIP_ARMOR, event.getNewItem(), event);
+    }
 
+    @EventHandler
+    public void onArmorUnequip(PlayerArmorChangeEvent event) {
+        if (event.getOldItem().getType().isAir()) return;
+        QEventRegistry.handle(QEventType.UNEQUIP_ARMOR, event.getOldItem(), event);
+    }
 }

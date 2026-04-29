@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * This is a manager for all methods and functions related to task schedulers, adding Folia support and removing the need keep using "try catch" statements to use the right scheduler.
  */
+@SuppressWarnings("unused")
 public final class QSchedulerManager {
 
     private static final boolean isFolia;
